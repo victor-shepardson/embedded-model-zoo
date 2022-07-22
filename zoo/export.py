@@ -33,7 +33,7 @@ def export(_, i, log_level):
     inp = torch.zeros(mod.input_shape)
     result = mod(inp)
     assert result.shape==mod.output_shape
-    DEBUG(result)
+    # DEBUG(result)
 
     ### torchscript export
     script_mod = torch.jit.script(mod)
