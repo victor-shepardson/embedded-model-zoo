@@ -27,3 +27,5 @@ python -m zoo
 may need this workaround:
 
 https://github.com/llvm/torch-mlir/issues/853#issuecomment-1148237757
+
+`python -m zoo --log_level=DEBUG` to see errors

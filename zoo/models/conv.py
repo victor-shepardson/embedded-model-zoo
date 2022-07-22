@@ -10,7 +10,7 @@ class simple_conv_1d(nn.Module):
             input_size=1024, hidden_size=256, depth=1, kernel=9, classes=8):
         super().__init__()
 
-        self.input_shape = (1,1,input_size) # batch, channel, time
+        self.input_shape = (1,input_size) # batch, time
         self.output_shape = (1,classes)
 
         net = [
@@ -29,6 +29,6 @@ class simple_conv_1d(nn.Module):
         self.net = nn.Sequential(*net)
 
     def forward(self, x):
-        y = self.net(x)
+        y = self.net(x[:,None])
         return y.mean(-1)#.softmax(-1)
 

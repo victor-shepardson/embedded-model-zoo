@@ -6,8 +6,9 @@ from . import models
 from .util import to_export
 from .logger import *
 
-def export(_, i):
-    print(i)
+def export(_, i, log_level):
+    logging.basicConfig(level=log_level)
+
     mod_cls = to_export[i]
 
     logging.info('='*80)
@@ -59,6 +60,7 @@ def export(_, i):
 
     except ImportError:
         FAIL(f'torch_mlir: exporting {name} to {tosa_path} failed (torch-mlir not available)')    
-    except torch_mlir.compiler_utils.TorchMlirCompilerError:
-        FAIL(f'torch_mlir: exporting {name} to {tosa_path} failed (compiler error')    
+    except torch_mlir.compiler_utils.TorchMlirCompilerError as e:
+        FAIL(f'torch_mlir: exporting {name} to {tosa_path} failed (compiler error')
+        DEBUG(e.value)
         

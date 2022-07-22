@@ -9,12 +9,12 @@ from .logger import *
 # the purpose of multiprocessing is to recover when torch-mlir crashes in C code,
 # which is likely since it is unstable
 
-def main():
+def main(log_level='INFO'):
     print(to_export)  
     for i in range(len(to_export)):
         try:
             name = to_export[i].__name__
-            torch.multiprocessing.spawn(export, args=(i,), join=True)
+            torch.multiprocessing.spawn(export, args=(i, log_level), join=True)
         except torch.multiprocessing.ProcessExitedException:
             FAIL(f"torch-mlir: failed to export {name} (hard crashed)")
         except torch.multiprocessing.ProcessRaisedException:
