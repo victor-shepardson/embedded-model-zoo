@@ -18,6 +18,10 @@ these neural networks are not trained models and are somewhat arbitary in archit
 `conda config --env --set subdir osx-64`
 `pip install --pre torch-mlir -f https://github.com/llvm/torch-mlir/releases --extra-index-url https://download.pytorch.org/whl/nightly/cpu`
 
+`cd embedded_model_zoo`
+`pip install -e .`
+`python -m zoo`
+
 may need this workaround:
 
 https://github.com/llvm/torch-mlir/issues/853#issuecomment-1148237757
