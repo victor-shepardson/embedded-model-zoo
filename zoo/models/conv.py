@@ -1,9 +1,9 @@
 import torch
 from torch import nn
 
-from ..util import export
+from ..util import register
 
-@export
+@register
 class simple_conv_1d(nn.Module):
 
     def __init__(self, 
@@ -30,5 +30,5 @@ class simple_conv_1d(nn.Module):
 
     def forward(self, x):
         y = self.net(x)
-        return y.mean(-1).softmax(-1)
+        return y.mean(-1)#.softmax(-1)
 

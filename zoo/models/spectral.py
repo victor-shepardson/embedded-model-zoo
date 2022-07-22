@@ -1,9 +1,9 @@
 import torch
 from torch import nn
 
-from ..util import export
+from ..util import register
 
-@export
+@register
 class log_spectrum(nn.Module):
 
     def __init__(self, input_size=1024):
