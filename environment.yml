@@ -22,4 +22,3 @@ dependencies:
   - wheel=0.37.1=pyhd8ed1ab_0
   - xz=5.2.5=h642e427_1
   - zlib=1.2.12=ha287fd2_2
-prefix: /Users/victor/mambaforge/envs/zoo
