@@ -1,5 +1,5 @@
 from pathlib import Path
-import pickle
+import warnings
 
 import torch
 from . import models
@@ -32,7 +32,8 @@ def export(_, i, log_level):
     INFO(f'running module {name}')
     inp = torch.zeros(mod.input_shape)
     result = mod(inp)
-    assert result.shape==mod.output_shape
+    shapes = (result.shape, mod.output_shape)
+    assert all(s==shapes[0] for s in shapes), shapes
     # DEBUG(result)
 
     ### torchscript export
@@ -42,10 +43,15 @@ def export(_, i, log_level):
 
     ### ONNX export
     try:
-        torch.onnx.export(mod, inp, onnx_path, verbose=False)
+        with warnings.catch_warnings():
+            # ignore warnings about batch size
+            warnings.simplefilter("ignore")
+            torch.onnx.export(mod, inp, onnx_path, verbose=False)
         DONE(f'onnx: exported module {name} to {onnx_path}')
-    except torch.onnx.errors.UnsupportedOperatorError:
+    except torch.onnx.errors.UnsupportedOperatorError as e:
         FAIL(f'onnx: exporting {name} to {onnx_path} failed (unsupported operator)')
+        DEBUG(e)
+
 
     ### TOSA export
     try:
@@ -61,6 +67,6 @@ def export(_, i, log_level):
     except ImportError:
         FAIL(f'torch_mlir: exporting {name} to {tosa_path} failed (torch-mlir not available)')    
     except torch_mlir.compiler_utils.TorchMlirCompilerError as e:
-        FAIL(f'torch_mlir: exporting {name} to {tosa_path} failed (compiler error')
+        FAIL(f'torch_mlir: exporting {name} to {tosa_path} failed (compiler error)')
         DEBUG(e.value)
         

@@ -7,7 +7,7 @@ from .export import export
 from .logger import *
 
 # the purpose of multiprocessing is to recover when torch-mlir crashes in C code,
-# which is likely since it is unstable
+# which is likely since it is unstable nightly builds only as of July 2022
 
 def main(log_level='INFO'):
     print(to_export)  
