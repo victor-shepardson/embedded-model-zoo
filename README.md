@@ -2,7 +2,7 @@
 
 <!-- setup without torch-mlir with release pytorch:
 
-`conda create -f environment.yml`
+`conda env create -f environment.yml`
 `conda activate zoo`
 `pip install -e .`
 `python -m zoo` -->
