@@ -1,7 +1,10 @@
 from pathlib import Path
 import warnings
+import subprocess
+import sys
 
 import torch
+
 from . import models
 from .util import to_export
 from .logger import *
@@ -24,6 +27,7 @@ def export(_, i, log_level):
     ts_path = ts_root / (name+'.ts')
     onnx_path = onnx_root / (name+'.onnx')
     tosa_path = tosa_root / (name+'.tosa')
+    
 
     INFO(f'constructing module {name}')
     mod = mod_cls()
@@ -48,10 +52,29 @@ def export(_, i, log_level):
             warnings.simplefilter("ignore")
             torch.onnx.export(mod, inp, onnx_path, verbose=False)
         DONE(f'onnx: exported module {name} to {onnx_path}')
+
+        ### tflite export
+        python = sys.executable.replace('zoo', 'zoo-tf')
+        result = subprocess.run([python, 'zoo/export_tf.py', onnx_path],
+            stdin=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+
+        DEBUG(result.stdout)
+        DEBUG(result.stderr)
+
+        DONE(f'tflite: exported {name}')
+
     except torch.onnx.errors.UnsupportedOperatorError as e:
         FAIL(f'onnx: exporting {name} to {onnx_path} failed (unsupported operator)')
         DEBUG(e)
+        FAIL(f'tflite: exporting {name} not attempted (onnx failed)')
 
+
+    except subprocess.CalledProcessError as e:
+        FAIL(f'tflite: exporting {name} failed')
+        DEBUG(e)
+        
+
+    return
 
     ### TOSA export
     try:

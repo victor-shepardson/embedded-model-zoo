@@ -11,11 +11,12 @@ class log_spectrum(nn.Module):
 
         self.input_shape = (1,input_size) # batch, channel, time
         self.output_shape = (1,input_size//2+1)
-
+        self.fft_size = input_size
         # self.window = self.register_buffer('window', torch.hann_window(input_size))
 
     def forward(self, x):
         size = self.input_shape[-1]
-        X = torch.fft.rfft(x * torch.hann_window(size), size, -1, norm='ortho')
+        w = torch.ones(size) # torch.hann_window(size) 
+        X = torch.fft.rfft(x * w, self.fft_size, -1, norm='ortho')
         return (X*X + 1e-7).log()
 
