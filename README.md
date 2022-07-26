@@ -14,7 +14,7 @@ these neural networks are not trained models and are somewhat arbitary in archit
 ## setup with torch-mlir and nightly pytorch on arm64 mac:
 
 ```
-CONDA_SUBDIR=osx-64 conda create -n zoo python pip fire
+CONDA_SUBDIR=osx-64 conda create -n zoo -c conda-forge python pip fire
 conda activate zoo
 conda config --env --set subdir osx-64
 pip install --pre torch-mlir -f https://github.com/llvm/torch-mlir/releases --extra-index-url https://download.pytorch.org/whl/nightly/cpu
