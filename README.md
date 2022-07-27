@@ -5,11 +5,11 @@ this repo is a python package. running it as a script will define and export var
 these neural networks are not trained models and are somewhat arbitary in architecture. thus, absolute performance numbers are not meaningful. but they should provide a sense of the relative presence/performance of various operators between formats and runtimes.
 
 `nn.Modules` defined in pytorch are exported to:
-* torchscript (`.ts`) using `torch.jit` 
-    * -> ONNX (`.onnx`) via torchscript using `torch.onnx`
-        * -> tensorflow SavedModel (`.tf`) via ONNX using `onnx-tf`
-            * -> tflite (`.tflite`) via SavedModel using `tensorflow.lite`
-* TOSA (`.tosa`) using `torch-mlir`
+- torchscript (`.ts`) using `torch.jit` 
+    - -> ONNX (`.onnx`) via torchscript using `torch.onnx`
+        - -> tensorflow SavedModel (`.tf`) via ONNX using `onnx-tf`
+            - -> tflite (`.tflite`) via SavedModel using `tensorflow.lite`
+- TOSA (`.tosa`) using `torch-mlir`
 
 ## setup with torch-mlir and nightly pytorch on arm64 mac:
 
