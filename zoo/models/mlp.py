@@ -38,3 +38,29 @@ class basic_mlp(nn.Module):
 
     def forward(self, x):
         return self.net(x)
+
+@register
+class siren_mlp(nn.Module):
+
+    def __init__(self, 
+            input_size=1024, hidden_size=256):
+        super().__init__()
+
+        self.input_shape = (1, input_size,)
+        self.output_shape = (input_size, 1,)
+
+        self.root = nn.Linear(1, hidden_size)
+        self.stem = nn.ModuleList((
+            nn.Linear(hidden_size, hidden_size),
+            nn.Linear(hidden_size, hidden_size),
+            nn.Linear(hidden_size, hidden_size),
+            nn.Linear(hidden_size, 1))
+        )
+
+    def forward(self, x):
+        x = x.reshape(*self.input_shape[::-1])
+        x = self.root(x)
+        for layer in self.stem:
+            x = layer(x.sin())
+
+        return x

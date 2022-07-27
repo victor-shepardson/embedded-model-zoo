@@ -14,7 +14,7 @@ def export(_, i, log_level):
 
     mod_cls = to_export[i]
 
-    logging.info('='*80)
+    logging.info('='*70)
     ts_root = Path('torchscript')
     onnx_root = Path('onnx')
     tosa_root = Path('tosa')
