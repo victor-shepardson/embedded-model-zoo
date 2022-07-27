@@ -72,6 +72,8 @@ def export(_, i, log_level):
     except subprocess.CalledProcessError as e:
         FAIL(f'tflite: exporting {name} failed')
         DEBUG(e)
+        DEBUG(e.stdout)
+        DEBUG(e.stderr)
         
 
     return
