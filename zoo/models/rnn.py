@@ -10,7 +10,7 @@ class simple_rnn(nn.Module):
             input_size=1024, hidden_size=256, depth=1):
         super().__init__()
 
-        self.input_shape = (1,input_size) # batch, time
+        self.input_shape = (1, input_size) 
         self.output_shape = (depth,1,hidden_size)
 
         self.register_buffer('h', torch.randn(self.output_shape))
@@ -18,7 +18,8 @@ class simple_rnn(nn.Module):
         self.net = nn.RNN(1, hidden_size, depth)
 
     def forward(self, x):
-        _, x = self.net(x.t()[...,None], self.h)
+        x = x.reshape(self.input_shape[1], 1, 1) # time, batch, channel
+        _, x = self.net(x, self.h)
         return x
 
 # tried this version with no transpose to get TOSA to work, but it still

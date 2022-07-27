@@ -29,7 +29,9 @@ class simple_conv_1d(nn.Module):
         self.net = nn.Sequential(*net)
 
     def forward(self, x):
-        y = self.net(x[:,None])
+        # x = x[:,None]
+        x = x.reshape(1,*self.input_shape)
+        y = self.net(x)
         return y.mean(-1)#.softmax(-1)
 
 @register
@@ -60,7 +62,9 @@ class resnet_1d(nn.Module):
         self.flower = nn.Conv1d(hidden_size, classes, 1)
 
     def forward(self, x):
-        x = self.root(x[:,None])
+        # x = x[:,None]
+        x = x.reshape(1,*self.input_shape)
+        x = self.root(x)
         for block in self.stem:
             x = x + block(x)
         return self.flower(x).mean(-1).softmax(-1)

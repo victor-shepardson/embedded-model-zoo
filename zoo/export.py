@@ -75,9 +75,6 @@ def export(_, i, log_level):
         DEBUG(e.stdout)
         DEBUG(e.stderr)
         
-
-    return
-
     ### TOSA export
     try:
         import torch_mlir
@@ -86,7 +83,6 @@ def export(_, i, log_level):
         # INFO(tosa_mod.operation.get_asm(large_elements_limit=10))
         with open(tosa_path, 'w') as f:
             f.write(str(tosa_mod))
-            # f.write(tosa_mod.operation.get_asm(large_elements_limit=10))
         DONE(f'torch_mlir: exported module {name} to {tosa_path}')
 
     except ImportError:
